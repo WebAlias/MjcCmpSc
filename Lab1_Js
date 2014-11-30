@@ -1,0 +1,16 @@
+// JavaScript Source Document
+//-----------------------------------------------
+// Project   : Lab One
+//-----------------------------------------------
+
+function GetRandomText(){
+ var msg1 = "Good Job!";
+ var msg2 = "Hello World!";
+ var msg3 = "Congratulations!";
+ var msg4 = "JavaScript is Fun!";
+ var msg_array = [msg1, msg2, msg3, msg4];
+
+ var index = Math.floor(Math.random() * 4);
+
+ document.getElementById("demo").innerHTML = msg_array[index];
+}
