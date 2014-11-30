@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+ <head>
+ </head>
+ <body>
+  <code><b>Javascript: Good Parts, Bad Parts.</b></code><br><br>
+  <code><b>-- Good Parts: Notes --</b></code><br>
+  <code> * Outnumbers other web based languages by a large margin.</code><br>
+  <code> * Included the broadest spectrum of programmers.</code><br>
+  <code> * Javascript uses object inheritance.</code><br>
+  <code> * Functions can be members of objects.</code><br>
+  <code> * Features: Lambda, Dynamic Objects, Loose Typing, Object Literals</code><br>
+  <code> * Highly Stable compared to other web based languages.</code><br>
+  <code> * Code can reach billions of people.</code><br>
+  <code> * Possible to write good, reliable programs in Javascript.</code><br><br>
+  <code><b>-- Bad Parts: Notes --</b></code><br>
+  <code> * No love in the Javascript world.</code><br>
+  <code> * Null and Undefined values cause too much confusion for learners.</code><br>
+  <code> * Allows for blockless statements.</code><br>
+  <code> * Allows the use of C-Style expressionless statements.</code><br>
+  <code> * Floating point arithmetic features difficult to use.</code><br>
+  <code> * Un-necessarily resereved words.</code>
+ </body>
+</html>
