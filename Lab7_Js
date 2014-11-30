@@ -1,0 +1,84 @@
+// Google maps api lab
+
+var markers = [];
+
+function update_radio_buttons(checked_radio_id){
+	var exempt_id = checked_radio_id;
+	var radios = get_all_radios();
+	for(i = 0; i < radios.length; i++){
+	  radios[i].id === exempt_id ? radios[i].checked = true : radios[i].checked = false;
+	}
+}
+
+function get_all_radios(){
+	var radios = [];
+	var radio_default = document.getElementById("radio-default");
+	radios.push(radio_default);
+	var radio_downey = document.getElementById("radio-downey");
+        radios.push(radio_downey);
+	var radio_beyer = document.getElementById("radio-beyer");
+	radios.push(radio_beyer);
+	var radio_davis = document.getElementById("radio-davis");
+	radios.push(radio_davis);
+	var radio_enochs = document.getElementById("radio-enochs");
+	radios.push(radio_enochs);
+	var radio_modesto = document.getElementById("radio-modesto");
+	radios.push(radio_modesto);
+	return radios;
+}
+
+function set_no_selection(){
+	var radios = get_all_radios();
+	for(i = 0; i < radios.length; i++){
+	  radios[i].checked = false;
+	}
+	radios[0].checked = true;
+	clear_markers();
+}
+
+function clear_markers(){
+	for(i = 0; i < markers.length; i++){
+	  markers[i].setMap(null);
+	}
+	markers = [];
+}
+
+function plot_downey(){
+        var downey = new google.maps.LatLng(37.6574302, -120.97465580, false);
+        var markerOptions = {map: map, position: downey};
+	var marker = new google.maps.Marker(markerOptions);
+	markers.push(marker);
+        update_radio_buttons("radio-downey");
+}
+
+function plot_beyer(){
+	var beyer = new google.maps.LatLng(37.6902072, -120.9663228, false);
+	var markerOptions = {map: map, position: beyer};
+	var marker = new google.maps.Marker(markerOptions);
+	markers.push(marker);
+	update_radio_buttons("radio-beyer");
+}
+
+function plot_davis(){
+	var davis = new google.maps.LatLng(37.6813184, -121.0102127, false);
+	var markerOptions = {map: map, position: davis};
+	var marker = new google.maps.Marker(markerOptions);
+	markers.push(marker);
+	update_radio_buttons("radio-davis");
+}
+
+function plot_enochs(){
+	var enochs = new google.maps.LatLng(37.6902, -120.9355, false);
+	var markerOptions = {map: map, position: enochs};
+	var marker = new google.maps.Marker(markerOptions);
+	markers.push(marker);
+	update_radio_buttons("radio-enochs");
+}
+
+function plot_modesto(){
+	var modesto = new google.maps.LatLng(37.6304862, -121.0074339, false);
+	var markerOptions = {map: map, position: modesto};
+	var marker = new google.maps.Marker(markerOptions);
+	markers.push(marker);
+	update_radio_buttons("radio-modesto");
+}
