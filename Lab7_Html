@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  html, body, #map-canvas {height: 100%; margin: 10px; padding: 10px;}
+  #mapList {
+    margin: 0; 
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 45%;
+    text-align: left;
+  }
+</style>
+<script type="text/javascript" src="./js/lab_seven.js"></script>
+<div id="mapList">
+    <input type="radio" id="radio-default" onclick=set_no_selection() checked>No Selection</input><br>
+    <input type="radio" id="radio-downey" onclick=plot_downey()>Show Downey High</input><br>
+    <input type="radio" id="radio-beyer" onclick=plot_beyer()>Show Beyer High</input><br>
+    <input type="radio" id="radio-davis" onclick=plot_davis()>Show Davis High</input><br>
+    <input type="radio" id="radio-enochs" onclick=plot_enochs()>Show Enochs High</input><br>
+    <input type="radio" id="radio-modesto" onclick=plot_modesto()>Show Modesto High</input>
+</div>
+<script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ6NiTkEncWRrNyvmAQ7zYnnPuoOP87gI">
+</script>
+<script>
+  var map;
+  var mapOptions;
+
+  function google_map(){
+    mapOptions = {center: {lat: 37.6614, lng: -120.9944}, zoom: 12};
+    map =  new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  }
+
+  google.maps.event.addDomListener(window, 'load', google_map);
+</script>
+</head>
+<body>
+  <div id="map-canvas"></div>
+</body>
+</html>
