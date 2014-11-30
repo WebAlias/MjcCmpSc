@@ -1,0 +1,18 @@
+// Lab Four : Dice roll
+// Jeff Schutt
+// 10/6/14
+
+// Generates a number between 1 and 6
+function roll_dice(id1, id2){
+	var value = Math.floor(Math.random() * 6) + 1;
+	id1.innerHTML = value;
+	id2.innerHTML = 0;
+}
+
+// Generates two values between 1 and 6
+function roll_two_dice(id1, id2){
+	var value1 = Math.floor(Math.random() * 6) + 1;
+	var value2 = Math.floor(Math.random() * 6) + 1;
+	id1.innerHTML = value1
+	id2.innerHTML = value2
+}
