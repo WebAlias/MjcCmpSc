@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Press the button.</p>
+
+<button type="button" 
+onclick="GetRandomText()">Press Me</button>
+
+<script src="js/lab_one.js"></script>
+
+<p id="demo"></p>
+
+</body>
+</html>
