@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			html, body, #map-canvas {height: 100%; margin: 0; padding: 0;}
+			#map-options {padding-left: 45%; margin: 5px; text-align: left;}
+		</style>
+		<div id="map-options">
+			<input type="checkbox" id="input_none" onclick=clear_visitors() checked>Clear map<br>
+			<input type="checkbox" id="input_us" onclick=show_visitors_us()>United States<br>
+			<input type="checkbox" id="input_eu" onclick=show_visitors_eu()>Europe<br>
+			<input type="checkbox" id="input_as" onclick=show_visitors_as()>Asia<br>
+			<input type="checkbox" id="input_etc" onclick=show_visitors_etc()>Others<br>
+		</div>
+		<script src="js/sql.js"></script>
+		<script src="js/lab_eight_b.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ6NiTkEncWRrNyvmAQ7zYnnPuoOP87gI">
+		</script>
+		<script>
+			// Setup database
+			load_database();
+			 
+			// Setup goolge map
+			var map;
+			var mapOptions;
+
+			function google_map(){
+       				mapOptions = {center: {lat: 0.0, lng: 0.0}, zoom: 2};
+        			map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      			}
+
+			// Creaet the map
+			google.maps.event.addDomListener(window, 'load', google_map);
+		</script>
+	</head>
+	<body>
+		<div id="map-canvas"></div>
+	</body>
+</html>
