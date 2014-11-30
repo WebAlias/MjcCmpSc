@@ -1,0 +1,260 @@
+// Lab eight part B javascript.
+
+// Variable declartions
+
+var db;
+var markers_us = [];
+var markers_eu = [];
+var markers_as = [];
+var markers_etc = [];
+
+// Constant declarations
+
+var EU_COUNTRIES = ["GB", "EU", "NO", "AT", "IT", "CH", "FR", "DE", "DK", "PL", "GR", "NL", "CZ"];
+var AS_COUNTRIES = ["KR", "CN", "TW", "PH", "SG", "HK", "ID"];
+
+// Database methods
+
+function load_database(){
+        var xmlReq = new XMLHttpRequest();
+	xmlReq.open("GET", "js/ipvisitors.sqlite", true);
+	xmlReq.responseType = "arraybuffer";
+	xmlReq.onload = function(e){
+		var arrayBuffer = xmlReq.response;
+		if(arrayBuffer){
+			var result = new Uint8Array(arrayBuffer);
+			db = new SQL.Database(result);
+		}
+	}
+	xmlReq.send(null);
+}
+
+
+// Get IP visitor list
+
+function get_ip_visitors(sql_statement){
+	var ip_list = [];
+	var result = db.exec(sql_statement);
+	for(i = 0; i < result[0].values.length; i++){
+		ip_list[i] = result[0].values[i][1];
+		ip_list[i] += ' ' + result[0].values[i][2];
+	}
+	return ip_list;
+}
+
+// Removes duplicates
+
+function make_unique_values(array){
+	var j = 0;
+	var new_array = [];
+	for(i = 0; i < array.length; i++){
+		var dup = is_duplicate(new_array, array[i], 0, false);
+		if(!dup){new_array[j] = array[i]; j++;}
+	}
+	return new_array;
+}
+
+function is_duplicate(array, val, i, bool){
+	if(array[i] === val){
+		return bool = true;
+	} else if(array.length === i + 1 || array.length === 0){
+		return bool = false;
+	}
+	bool = is_duplicate(array, val, i+1, bool);
+	return bool;
+}
+
+// Marker methods
+
+var NONE = function () {return document.getElementById("input_none");}
+var US = function () {return document.getElementById("input_us");}
+var EU = function () {return document.getElementById("input_eu");}
+var AS = function () {return document.getElementById("input_as");}
+var ETC = function () {return document.getElementById("input_etc");}
+
+function update_checkboxes(code){
+	var should_clear;
+	if(code === "NONE"){
+		NONE().checked = true; 
+		US().checked = false; 
+		EU().checked = false; 
+		AS().checked = false; 
+		ETC().checked = false;
+		should_clear = true;
+	}
+	if(US().checked || EU().checked || AS().checked || ETC().checked){NONE().checked = false;}
+	if(!US().checked && !EU().checked && !AS().checked && !ETC().checked){NONE().checked = true;}
+	if(code === "US"){US().checked ? should_clear = false : should_clear = true;}
+	if(code === "EU"){EU().checked ? should_clear = false : should_clear = true;}
+	if(code === "AS"){AS().checked ? should_clear = false : should_clear = true;}
+	if(code === "ETC"){ETC().checked ? should_clear = false : should_clear = true;}
+	return should_clear;
+}
+
+function show_markers(code){
+	var markers = [];
+	switch(code){
+	case "US":
+		markers = markers_us;
+		break;
+	case "EU":
+		markers = markers_eu;
+		break;
+	case "AS":
+		markers = markers_as;
+		break;
+	case "ETC":
+		markers = markers_etc;
+		break;
+	default:
+		alert("Bad marker display value.");
+	}
+	for(i = 0; i < markers.length; i++){
+		markers[i].setMap(map);
+	}
+}
+
+function clear_markers(code){
+	var markers = [];
+	switch(code){
+	case "US":
+		markers = markers_us;
+		marker_us = [];
+		break;
+	case "EU":
+		markers = markers_eu;
+		markers_eu = [];
+		break;
+	case "AS":
+		markers = markers_as;
+		markers_as = [];
+		break;
+	case "ETC":
+		markers = markers_etc;
+		markers_etc = [];
+		break;
+	case "NONE":
+		markers = markers_us.concat(markers_eu, markers_as, markers_etc);
+		markers_us = markers_eu = markers_as = markers_etc = [];
+		break;
+	default:
+		alert("Bad clear marker value.");
+	}
+	for(i = 0; i < markers.length; i++){
+		markers[i].setMap(null);
+	}
+}
+
+function clear_visitors(){
+	update_checkboxes("NONE");
+	clear_markers("NONE");
+}
+
+function show_visitors_us(){
+	var should_clear = update_checkboxes("US");
+	if(should_clear){
+		clear_markers("US");
+		return;
+	}
+	var visitors = get_ip_visitors(sql_statement_us());
+	visitors = make_unique_values(visitors);
+	create_markers(visitors, "US");
+	show_markers("US");
+}
+
+function sql_statement_us(){
+	var r = 'SELECT DISTINCT ip, latitude, longitude FROM visitors WHERE country_code="US"';
+	return r;
+}
+
+function show_visitors_eu(){
+	var should_clear = update_checkboxes("EU");
+	if(should_clear){
+		clear_markers("EU");
+		return;
+	}
+	var visitors = get_ip_visitors(sql_statement_eu());
+	visitors = make_unique_values(visitors);
+	create_markers(visitors, "EU");
+	show_markers("EU");
+}
+
+function sql_statement_eu(){
+	var r = 'SELECT DISTINCT ip, latitude, longitude FROM visitors WHERE country_code="' + EU_COUNTRIES[0] + '"';
+	for(i = 1; i < EU_COUNTRIES.length; i++){
+		r += ' OR country_code="' + EU_COUNTRIES[i] + '"';
+	}
+	return r;
+}
+
+function show_visitors_as(){
+	var should_clear = update_checkboxes("AS");
+	if(should_clear){
+		clear_markers("AS");
+		return;
+	}
+	var visitors = get_ip_visitors(sql_statement_as());
+	visitors = make_unique_values(visitors);
+	create_markers(visitors, "AS");
+	show_markers("AS");
+}
+
+function sql_statement_as(){
+	var r = 'SELECT DISTINCT ip, latitude, longitude FROM visitors WHERE country_code="' + AS_COUNTRIES[0] +'"';
+	for(i = 1; i < AS_COUNTRIES.length; i++){
+		r += ' OR country_code="' + AS_COUNTRIES[i] + '"';
+	}
+	return r;
+}
+
+function show_visitors_etc(){
+	var should_clear = update_checkboxes("ETC");
+	if(should_clear){
+		clear_markers("ETC");
+		return;
+	}
+	var visitors = get_ip_visitors(sql_statement_etc());
+	visitors = make_unique_values(visitors);
+	create_markers(visitors, "ETC");
+	show_markers("ETC");
+}
+
+function sql_statement_etc(){
+	var r = 'SELECT DISTINCT ip, latitude, longitude FROM visitors WHERE country_code!="US"';
+	for(i = 0; i < EU_COUNTRIES.length; i++){
+		r += ' OR country_code!="' + EU_COUNTRIES[i] + '"';
+	}
+	for(i = 0; i < AS_COUNTRIES.length; i++){
+		r += ' OR country_code!="' + AS_COUNTRIES[i] + '"';
+	}
+	return r;
+}
+
+// Marker creation
+
+function create_markers(ip_array, code){
+	for(i = 0; i < ip_array.length; i++){
+		var latlong = ip_array[i].split(" ");
+		var lat = parseFloat(latlong[0]);
+		var lng = parseFloat(latlong[1]);
+		var latlng = new google.maps.LatLng(lat, lng, false);
+		var markerOptions = {position: latlng};
+		var marker = new google.maps.Marker(markerOptions);
+		switch(code){
+		case "US":
+			markers_us.push(marker);
+			break;
+		case "EU":
+			markers_eu.push(marker);
+			break;
+		case "AS":
+			markers_as.push(marker);
+			break;
+		case "ETC":
+			markers_etc.push(marker);
+			break;
+		default:
+			alert("Bad marker value.");
+		}
+	}
+}
