@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body, #map-canvas {height: 100%; margin: 0; padding: 0;}
+      #map-options { 
+        margin: 5px;
+        padding-top: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        padding-left: 45%;
+        text-align: left;
+      }
+    </style>
+    <div id="map-options">
+      <input type="radio" id="clear-markers" onclick=clear_markers() checked>Clear Markers</input><br>
+      <input type="radio" id="show-markers" onclick=show_markers()>Show Markers</input>
+    </div>
+    <script type="text/javascript" src="js/lab_eight.js"></script>
+    <script type="text/javascript" 
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQ6NiTkEncWRrNyvmAQ7zYnnPuoOP87gI">
+    </script>
+    <script>
+      var map;
+      var mapOptions;
+
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+	create_markers();
+      } else {
+        alert("File Api's are not fully supported.");
+      }
+
+      function google_map(){
+	mapOptions = {center: {lat: 37.6614, lng: -120.9944}, zoom: 2};
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      }
+
+      google.maps.event.addDomListener(window, 'load', google_map);
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>
