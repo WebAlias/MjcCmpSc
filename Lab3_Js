@@ -1,0 +1,55 @@
+//lab_three.js
+//
+function MoneyValue(num, val){
+	var sum;
+	sum = num * 1;
+	sum = (!num ? 0 : num) * val;
+	if (isNaN(sum)){
+		sum = 0;
+	}
+	return sum;
+}
+
+function NeedsTrailingZeroes(string){
+	var result = string.substring(string.length - 3, string.length - 2);
+	return result === '.' ? false : true;
+}
+
+function AddTrailingZeroes(string){
+	var new_string;
+	var sub_str = string.substring(string.length - 2, string.length - 1);
+	if (sub_str === '.'){
+		new_string = string + "0";
+	} else{
+		new_string = string + ".00";
+	}		
+	return new_string;
+}
+
+function MoneyTotal(form){
+	// gather total money inputs
+	hun = MoneyValue(form.hun.value, 100);
+	fif = MoneyValue(form.fif.value,  50);
+	twe = MoneyValue(form.twe.value,  20);
+	ten = MoneyValue(form.ten.value,  10);
+	fiv = MoneyValue(form.fiv.value,   5);
+	one = MoneyValue(form.one.value,   1);
+	pny = MoneyValue(form.pny.value, .01);
+	nck = MoneyValue(form.nck.value, .05);
+	dme = MoneyValue(form.dme.value, .10);
+	qtr = MoneyValue(form.qtr.value, .25);
+	hlf = MoneyValue(form.hlf.value, .50);
+	
+	// accumulate total
+	total = hun + fif + twe + ten + fiv + one + hlf + qtr + dme + nck + pny;
+	total = ((Math.round(total * 100)) / 100);
+
+	// add trailing zeroes if necessary
+	if (NeedsTrailingZeroes(total.toString())){
+		total = AddTrailingZeroes(total.toString());
+	}else{
+		total = total.toString();
+	}		
+	
+	form.total.value = "$ " + total; //set the total
+}
